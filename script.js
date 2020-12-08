@@ -10,10 +10,12 @@ const newDeck = [];
     let dealerValue;
     let winner;
     let newCard;
+    let playerCard1;
+    let playerCard2;
+    let dealerCard1;
 
 /*----- cached element references -----*/
 
-    // cache card values; (play)(hit)(stand)(restart)buttons; (status)(winning)messages
 let playButton = document.getElementById("play");
 let board = document.getElementById("board");
 let hitButton = document.getElementById("hit");
@@ -31,11 +33,10 @@ let dealerscard2 = document.getElementById("dealer-card2");
 
 /*----- event listeners -----*/
 
-    // add event listeners ("click") to cached elements
 playButton.addEventListener("click", play);
 hitButton.addEventListener("click", hit);
 standButton.addEventListener("click", stand);
-// restartButton.addEventListener("click", restart);
+restartButton.addEventListener("click", restart);
 
 /*----- functions -----*/
 
@@ -71,9 +72,9 @@ function play(){
     playButton.classList.add("hidden");
     board.classList.remove("hidden");
 
-    let playerCard1 = newDeck.pop();
-    let playerCard2 = newDeck.pop();
-    let dealerCard1 = newDeck.pop();
+    playerCard1 = newDeck.pop();
+    playerCard2 = newDeck.pop();
+    dealerCard1 = newDeck.pop();
 
     playerscard1.classList.add(playerCard1["name"])
     playerscard2.classList.add(playerCard2["name"])
@@ -82,24 +83,18 @@ function play(){
     playerValue = playerCard1["value"] + playerCard2["value"];
     dealerValue = dealerCard1["value"];
     currentValue.innerHTML = playerValue;
-    checkWinner()
+    checkWinnerPlayer()
 };
-
-// // function countPoints(){
-// //     let playerScore;
-// //     playerScore = playerCard1["value"] + playerCard2["value"];
-// //     currentValue.innerHTML = playerScore;
-// // };
 
 function hit(){
     newCard = newDeck.pop();
     let hitCard = document.createElement("div");
     hitCard.setAttribute("class", "card");
-    hitCard.classList.add(newCard["name"]);
+    hitCard.classList.add(newCard["name"], "new");
     playerCards.appendChild(hitCard);
     playerValue += newCard["value"];
     currentValue.innerHTML = playerValue;
-    checkWinner()
+    checkWinnerPlayer()
 };
 
 function stand(){
@@ -111,25 +106,35 @@ function stand(){
         newCard = newDeck.pop();
         let dealerhitCard = document.createElement("div");
         dealerhitCard.setAttribute("class", "card");
-        dealerhitCard.classList.add(newCard["name"]);
+        dealerhitCard.classList.add(newCard["name"], "new");
         dealerCards.appendChild(dealerhitCard);
         dealerValue += newCard["value"];
     }
-    checkWinner2();
+    checkWinnerDealer();
 };
 
-// function restart(){
+function restart(){
 
-// };
+    // playerCard1 = {};
+    // playerCard2 = {};
+    // dealerCard1 = {};
+    dealerscard2.removeAttribute("class");
+    dealerscard2.setAttribute("class", "card back-blue");
+    document.querySelectorAll(".new").forEach(function(poker) {
+        poker.remove()
+    })
+    play();
+};
 
-function checkWinner(){
+function checkWinnerPlayer(){
     if (playerValue === 21){
         winnerMessage.innerHTML = "Player"
     } else if (playerValue > 21){
         winnerMessage.innerHTML = "Dealer"
     }
 };
-function checkWinner2(){
+
+function checkWinnerDealer(){
     if (dealerValue > 21 || (playerValue < 21 && dealerValue < 21 && playerValue > dealerValue)) {
         winnerMessage.innerHTML = "Player"
     } else if (dealerValue === 21 || (playerValue < 21 && dealerValue < 21 && playerValue < dealerValue)) {
