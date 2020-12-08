@@ -1,8 +1,6 @@
 /*----- constants -----*/
 const suits = ["c", "d", "h", "s"];
 const ranks = ["02", "03", "04", "05", "06", "07", "08", "09", "10", "J", "Q", "K", "A"];
-const deck = [];
-
 
 /*----- app's state (variables) -----*/
 
@@ -13,7 +11,7 @@ let newCard;
 let playerCard1;
 let playerCard2;
 let dealerCard1;
-let newDeck = [];
+let deck = [];
 
 /*----- cached element references -----*/
 
@@ -61,25 +59,29 @@ function createDeck(){
 };
 
 function shuffleCards(){
-    for (let x=0; x<deck.length; x++) {
-        newDeck.push(deck[Math.floor(Math.random() * deck.length)])
+    for (let x=deck.length-1; x>0; x--) {
+      let y = Math.floor(Math.random() * (x+1));
+      let temp = deck[x]; 
+      deck[x] = deck[y]; 
+      deck[y] = temp;
+
     }
-    return newDeck;
+    return deck;
 }
 
 function play(){
-    createDeck();
     playButton.classList.add("hidden");
     board.classList.remove("hidden");
     deal();
 };
 
 function deal(){
+    createDeck();
     shuffleCards();
 
-    playerCard1 = newDeck.pop();
-    playerCard2 = newDeck.pop();
-    dealerCard1 = newDeck.pop();
+    playerCard1 = deck.pop();
+    playerCard2 = deck.pop();
+    dealerCard1 = deck.pop();
 
     playerscard1.classList.add(playerCard1["name"])
     playerscard2.classList.add(playerCard2["name"])
@@ -93,7 +95,7 @@ function deal(){
 }
 
 function hit(){
-    newCard = newDeck.pop();
+    newCard = deck.pop();
     let hitCard = document.createElement("div");
     hitCard.setAttribute("class", "card");
     hitCard.classList.add(newCard["name"], "new");
@@ -105,11 +107,11 @@ function hit(){
 
 function stand(){
     dealerscard2.classList.remove("back-blue");
-    newCard = newDeck.pop();
+    newCard = deck.pop();
     dealerscard2.classList.add(newCard["name"]);
     dealerValue += newCard["value"];
     if (dealerValue < 17) {
-        newCard = newDeck.pop();
+        newCard = deck.pop();
         let dealerhitCard = document.createElement("div");
         dealerhitCard.setAttribute("class", "card");
         dealerhitCard.classList.add(newCard["name"], "new");
@@ -133,10 +135,10 @@ function restart(){
     document.querySelectorAll(".new").forEach(function(poker) {
         poker.remove()
     })
-    newDeck = [];
     playerValue = 0;
     dealerValue = 0;
     winnerMessage.innerHTML = "";
+    deck = [];
 
     deal();
 };
