@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cards.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <h1>BLACKJACK</h1>
+    <div id="buttons">
+        <button id="hit" class="button">Hit</button>
+        <button id="stand" class="button">Stand</button>
+        <button id="restart" class="button">Restart</button>
+    </div>
+    <div id="play-cover">
+        <button id="play">PLAY!</button>
+    </div>
+    <div id="board" class="hidden">
+        <h3 id="status-message">You have &nbsp<u><span id="current-value">&nbsp&nbsp&nbsp&nbsp&nbsp</span></u>. Hit or Stand?</h3>
+        <div id="cards-area">
+            <div id="player-area">
+                <h3>Player</h3>
+                <div id="player-cards">
+                    <div id="player-card1" class="card"></div>
+                    <div id="player-card2" class="card"></div>
+                </div>
+            </div>
+            <div id="dealer-area">
+                <h3>Dealer</h3>
+                <div id="dealer-cards">
+                    <div id="dealer-card1" class="card d10"></div>
+                    <div id="dealer-card2" class="card back-blue"></div>                
+                </div>
+            </div>
+        </div>
+        <h2>Winner: &nbsp<u><span id="winner"></span></u></h2>
+    </div>
+</body>
+</html>
