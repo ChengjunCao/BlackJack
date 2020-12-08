@@ -2,17 +2,18 @@
 const suits = ["c", "d", "h", "s"];
 const ranks = ["02", "03", "04", "05", "06", "07", "08", "09", "10", "J", "Q", "K", "A"];
 const deck = [];
-const newDeck = [];
+
 
 /*----- app's state (variables) -----*/
 
-    let playerValue;
-    let dealerValue;
-    let winner;
-    let newCard;
-    let playerCard1;
-    let playerCard2;
-    let dealerCard1;
+let playerValue;
+let dealerValue;
+let winner;
+let newCard;
+let playerCard1;
+let playerCard2;
+let dealerCard1;
+let newDeck = [];
 
 /*----- cached element references -----*/
 
@@ -68,9 +69,13 @@ function shuffleCards(){
 
 function play(){
     createDeck();
-    shuffleCards();
     playButton.classList.add("hidden");
     board.classList.remove("hidden");
+    deal();
+};
+
+function deal(){
+    shuffleCards();
 
     playerCard1 = newDeck.pop();
     playerCard2 = newDeck.pop();
@@ -83,8 +88,9 @@ function play(){
     playerValue = playerCard1["value"] + playerCard2["value"];
     dealerValue = dealerCard1["value"];
     currentValue.innerHTML = playerValue;
+
     checkWinnerPlayer()
-};
+}
 
 function hit(){
     newCard = newDeck.pop();
@@ -114,16 +120,25 @@ function stand(){
 };
 
 function restart(){
-
-    // playerCard1 = {};
-    // playerCard2 = {};
-    // dealerCard1 = {};
+    /*----- reset all cards -----*/
+    playerscard1.removeAttribute("class");
+    playerscard2.removeAttribute("class");
+    dealerscard1.removeAttribute("class");
+    playerscard1.setAttribute("class", "card");
+    playerscard2.setAttribute("class", "card");
+    dealerscard1.setAttribute("class", "card");
     dealerscard2.removeAttribute("class");
     dealerscard2.setAttribute("class", "card back-blue");
+    
     document.querySelectorAll(".new").forEach(function(poker) {
         poker.remove()
     })
-    play();
+    newDeck = [];
+    playerValue = 0;
+    dealerValue = 0;
+    winnerMessage.innerHTML = "";
+
+    deal();
 };
 
 function checkWinnerPlayer(){
