@@ -11,7 +11,11 @@ let newCard;
 let playerCard1;
 let playerCard2;
 let dealerCard1;
+let playerWin = 0;
+let dealerWin = 0;
+let tie = 0;
 let deck = [];
+let audio = new Audio('extra materials/dealing-card.wav');
 
 /*----- cached element references -----*/
 
@@ -22,6 +26,7 @@ let standButton = document.getElementById("stand");
 let restartButton = document.getElementById("restart");
 let statusMessage = document.getElementById("status-message");
 let currentValue = document.getElementById("current-value");
+let hintMessage = document.getElementById("hint-message");
 let winnerMessage = document.getElementById("winner");
 let playerCards = document.getElementById("player-cards");
 let dealerCards = document.getElementById("dealer-cards");
@@ -29,6 +34,9 @@ let playerscard1 = document.getElementById("player-card1");
 let playerscard2 = document.getElementById("player-card2");
 let dealerscard1 = document.getElementById("dealer-card1");
 let dealerscard2 = document.getElementById("dealer-card2");
+let playerWins = document.getElementById("player-wins");
+let dealerWins = document.getElementById("dealer-wins");
+let ties = document.getElementById("ties");
 
 /*----- event listeners -----*/
 
@@ -46,7 +54,7 @@ function createDeck(){
             if (ranks[j] === "J" || ranks[j] === "Q" || ranks[j] === "K") {
                 value = 10;
             } else if (ranks[j] === "A") {
-                value = 11;
+                value = 1;
             };
             let card = {
                 name: suits[i]+ranks[j],
@@ -72,6 +80,7 @@ function shuffleCards(){
 function play(){
     playButton.classList.add("hidden");
     board.classList.remove("hidden");
+    audio.play();
     deal();
 };
 
@@ -88,28 +97,62 @@ function deal(){
     dealerscard1.classList.add(dealerCard1["name"])
     
     playerValue = playerCard1["value"] + playerCard2["value"];
+
+    /*----- Make "A"'s value 1 or 11 -----*/
+    if ((playerCard1["value"] === 1 || playerCard2["value"] === 1) && playerValue < 12) {
+        playerValue += 10;
+    }
+
     dealerValue = dealerCard1["value"];
     currentValue.innerHTML = playerValue;
 
+    if (playerValue === 21) {
+        hintMessage.innerHTML = "BLACKJACK!";
+    } else if (playerValue > 21) {
+        hintMessage.innerHTML = "Bust!"
+    } else {
+        hintMessage.innerHTML = "Hit or Stand?"
+    }
     checkWinnerPlayer()
 }
 
 function hit(){
+    audio.play();
     newCard = deck.pop();
     let hitCard = document.createElement("div");
     hitCard.setAttribute("class", "card");
     hitCard.classList.add(newCard["name"], "new");
     playerCards.appendChild(hitCard);
+
+    /*----- Make "A"'s value 1 or 11 -----*/
+    if ((playerCard1["value"] === 1 || playerCard2["value"] === 1 || newCard["value"] === 1) && playerValue < 12) {
+        playerValue += 10;
+    }
+
     playerValue += newCard["value"];
     currentValue.innerHTML = playerValue;
+    if (playerValue === 21) {
+        hintMessage.innerHTML = "BLACKJACK!";
+    } else if (playerValue > 21) {
+        hintMessage.innerHTML = "Bust!"
+    } else {
+        hintMessage.innerHTML = "Hit or Stand?"
+    }
     checkWinnerPlayer()
 };
 
 function stand(){
+    audio.play();
     dealerscard2.classList.remove("back-blue");
     newCard = deck.pop();
     dealerscard2.classList.add(newCard["name"]);
     dealerValue += newCard["value"];
+
+    /*----- Make "A"'s value 1 or 11 -----*/
+    if ((dealerscard1["value"] === 1 || newCard["value"] === 1) && dealerValue < 12) {
+        dealerValue += 10;
+    }
+    
     if (dealerValue < 17) {
         newCard = deck.pop();
         let dealerhitCard = document.createElement("div");
@@ -122,6 +165,7 @@ function stand(){
 };
 
 function restart(){
+    audio.play();
     /*----- reset all cards -----*/
     playerscard1.removeAttribute("class");
     playerscard2.removeAttribute("class");
@@ -145,18 +189,28 @@ function restart(){
 
 function checkWinnerPlayer(){
     if (playerValue === 21){
-        winnerMessage.innerHTML = "Player"
+        winnerMessage.innerHTML = "Player";
+        playerWin += 1;
+        playerWins.innerHTML = playerWin;
     } else if (playerValue > 21){
-        winnerMessage.innerHTML = "Dealer"
+        winnerMessage.innerHTML = "Dealer";
+        dealerWin += 1;
+        dealerWins.innerHTML = dealerWin;
     }
 };
 
 function checkWinnerDealer(){
     if (dealerValue > 21 || (playerValue < 21 && dealerValue < 21 && playerValue > dealerValue)) {
-        winnerMessage.innerHTML = "Player"
+        winnerMessage.innerHTML = "Player";
+        playerWin += 1;
+        playerWins.innerHTML = playerWin;
     } else if (dealerValue === 21 || (playerValue < 21 && dealerValue < 21 && playerValue < dealerValue)) {
-        winnerMessage.innerHTML = "Dealer"
+        winnerMessage.innerHTML = "Dealer";
+        dealerWin += 1;
+        dealerWins.innerHTML = dealerWin;
     } else if (playerValue < 21 && dealerValue < 21 && playerValue === dealerValue) {
-        winnerMessage.innerHTML = "Tie"
+        winnerMessage.innerHTML = "Tie";
+        tie += 1;
+        ties.innerHTML = tie;
     }
 };

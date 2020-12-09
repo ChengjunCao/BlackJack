@@ -9,7 +9,15 @@
     <script defer src="script.js"></script>
 </head>
 <body>
-    <h1>BLACKJACK</h1>
+    <h1>BLACKJACK &nbsp&nbsp&nbsp&nbsp<span id="myname">by Mike Cao</span></h1>
+    <ul>
+        <li>Player Wins:</li>
+        <li id="player-wins">0</li>
+        <li>Dealer Wins:</li>
+        <li id="dealer-wins">0</li>
+        <li>Ties:</li>
+        <li id="ties">0</li>
+    </ul>
     <div id="buttons">
         <button id="hit" class="button">Hit</button>
         <button id="stand" class="button">Stand</button>
@@ -19,7 +27,7 @@
         <button id="play">PLAY!</button>
     </div>
     <div id="board" class="hidden">
-        <h3 id="status-message">You have &nbsp<u><span id="current-value">&nbsp&nbsp&nbsp&nbsp&nbsp</span></u>. Hit or Stand?</h3>
+        <h3 id="status-message">You have &nbsp<u><span id="current-value">&nbsp&nbsp&nbsp&nbsp&nbsp</span></u>. <span id="hint-message"></span></h3>
         <div id="cards-area">
             <div id="player-area">
                 <h3>Player</h3>
