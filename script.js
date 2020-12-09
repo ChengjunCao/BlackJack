@@ -153,7 +153,7 @@ function stand(){
         dealerValue += 10;
     }
     
-    if (dealerValue < 17) {
+    while (dealerValue < 17) {
         newCard = deck.pop();
         let dealerhitCard = document.createElement("div");
         dealerhitCard.setAttribute("class", "card");
