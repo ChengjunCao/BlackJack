@@ -12,14 +12,11 @@ It is up to each individual player if an ace is worth 1 or 11. Face cards are 10
 #### Screenshots of my version of Blackjack
 ![Screenshot1](https://i.imgur.com/dKxnlwn.png)
 
-<<<<<<< HEAD
 ![Screenshot2](https://i.imgur.com/E5EehME.png)
 
 
 My version of BLACKJACK was written in HTML, CSS and JavaScript.
 
-=======
->>>>>>> 0a971d2189f33341226583a78d1f422d1ad1489f
-You can play the game [here](https://chengjuncao.github.io/BlackJack/) !
+#### You can play the game [here](https://chengjuncao.github.io/BlackJack/) !
 
 Hit the play button and give it a shot!
